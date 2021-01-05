@@ -1,0 +1,17 @@
+class Sensor
+
+	types
+		public LotSensor = map nat1 to seq of char;
+		
+	instance variables
+		private lotSensor : LotSensor := { 1 |-> "vacant" };
+	
+	operations
+		public getLotSensor : nat1 ==> seq of char
+			getLotSensor (lot) == (
+				return lotSensor(lot);
+			);
+		
+		-- public detectLot
+	
+end Sensor

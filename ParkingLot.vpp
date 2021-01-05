@@ -1,0 +1,36 @@
+class ParkingLot
+
+	types
+		public LotToAvailability = map nat1 to bool;
+		
+	instance variables
+		private lotCount : nat := 0;
+		private LotList : LotToAvailability := { 1 |-> true, 2 |-> false, 3 |-> true};
+		private availability : bool := false;
+		public io : IO := new IO();
+		public lotSensor : Sensor := new Sensor();
+	
+	operations
+		public getAvailableLotCount : LotToAvailability ==> nat
+			getAvailableLotCount (lotList) == (
+				
+				for all x in set {1,...,3} do
+				 (if lotList(x) = true
+					then lotCount := lotCount + 1);
+					
+				return lotCount;
+			);
+			
+		public getList : () ==> LotToAvailability
+			getList () == (
+				return LotList;
+			);
+			
+	    public print : seq of char ==> bool
+			print(msg) == (
+				io.echo(msg);
+			);
+	functions
+	
+	
+end ParkingLot
