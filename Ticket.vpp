@@ -1,0 +1,50 @@
+class Ticket
+
+types
+
+public Ticket :: 
+ticketId: seq of char
+day: nat1
+month: seq of char
+year: nat1
+isPaid: bool;
+
+public paidticket::
+ticketId: seq of char
+price: real
+isPaid: bool;
+
+
+instance variables
+public newTicket: Ticket;
+public paidTicket: paidticket;
+
+
+operations
+public generateTicket: ()==> Ticket
+generateTicket()==
+(
+
+newTicket:= mk_Ticket("ID-1234", 21, "September", 2020, false);
+return newTicket;
+
+);
+public payTicket:Ticket==>paidticket
+payTicket(tix)==
+(
+paidTicket:=mk_paidticket(tix.newTicket.ticketId, 8.88, true);
+return showPaidTicket();
+);
+public showNewTicket:()==> Ticket
+showNewTicket()==
+(
+return newTicket;
+);
+
+public showPaidTicket:()==> paidticket
+showPaidTicket()==
+(
+return paidTicket;
+);
+
+end Ticket

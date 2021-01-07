@@ -1,0 +1,17 @@
+class TicketMachine
+
+
+types
+
+instance variables
+private ticket: Ticket:= new Ticket();
+
+operations
+public payTicket:Ticket==>Ticket`paidticket
+payTicket(tix)==
+(
+ticket.payTicket(tix);
+);
+
+
+end TicketMachine

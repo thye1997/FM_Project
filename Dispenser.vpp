@@ -1,0 +1,26 @@
+class Dispenser
+
+
+types
+
+
+instance variables
+public isDispense: bool:= false;
+public ticket: Ticket:= new Ticket();
+
+operations
+public dispenseTicket: bool==>Ticket`Ticket
+dispenseTicket(boolVal)==
+(
+ isDispense:= boolVal;
+ if isDispense = true
+   then (ticket.generateTicket();
+	)
+   else (ticket.showNewTicket();)
+  
+);
+
+
+
+
+end Dispenser

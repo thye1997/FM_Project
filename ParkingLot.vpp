@@ -3,19 +3,31 @@ class ParkingLot
 	types
 		public LotToAvailability = map nat1 to bool;
 		
+		public LotCount = nat;
+		public Floor = <Floor1> | <Floor2> | <Floor3>;
+                public floorToLotCount = map Floor to LotCount;
+		public slots = nat;
+		
 	instance variables
 		private lotCount : nat := 0;
-		private LotList : LotToAvailability := { 1 |-> true, 2 |-> false, 3 |-> true};
+		private LotList : LotToAvailability := { 1 |-> true, 2 |-> false, 3 |-> true};       
 		private availability : bool := false;
+               
+                --obj instance 
 		public io : IO := new IO();
 		public lotSensor : Sensor := new Sensor();
+		public ticketMachine:TicketMachine:= new TicketMachine();
+		
+		private floors : floorToLotCount:= {|->};
+		private setOfFloor: set of Floor:={};
+		
 	
 	operations
 		public getAvailableLotCount : LotToAvailability ==> nat
 			getAvailableLotCount (lotList) == (
-				
+
 				for all x in set {1,...,3} do
-				 (if lotList(x) = true
+				 (if LotList(x) = true
 					then lotCount := lotCount + 1);
 					
 				return lotCount;
@@ -30,6 +42,50 @@ class ParkingLot
 			print(msg) == (
 				io.echo(msg);
 			);
+----------------------------------------------------------------------------------
+	   public createSlot:()==> seq of char
+		        createSlot()==(
+		
+			floors:= floors munion { <Floor1> |-> 5};
+			floors:= floors munion { <Floor2> |-> 5};
+                        return "slot generated";
+			);
+
+	   public showSlot:()==>floorToLotCount
+		  showSlot()==
+			(
+			return floors;
+			);
+	   
+           public carEnter: Floor ==> floorToLotCount
+		  carEnter(f)==
+			(
+                        setOfFloor:= dom floors;
+			if exists x in set setOfFloor & f = x
+                        then
+                        (lotSensor.isCarpark:= true;
+			if lotSensor.isCarpark = true
+			then (
+			floors:= floors ++ {f |-> floors(f)-1 };
+			   return floors;  ))
+			);
+	   
+	   public carExit: Floor *Ticket ==> floorToLotCount
+		  carExit(f,tix)==
+			(
+                        setOfFloor:= dom floors; -- get list of slot for validate input f is valid
+			
+			if exists x in set setOfFloor & f = x  
+                        then
+                        (
+			lotSensor.isCarpark:= false;
+			if lotSensor.isCarpark = false
+			then ( floors:= floors ++ {f |-> floors(f)+1};
+			       ticketMachine.payTicket(tix);	
+			     ))
+			);
+	   
+           
 	functions
 	
 	
