@@ -22,7 +22,7 @@ class Main
 			carAtDispense(dist)== (
 				tickets.newTicket:= dispenser.onButtonPressed(dist);
 				return tickets.newTicket;
-return;
+
 			);
 
 	--thirdly, run parkinglot carEnter(floor) eg. <Floor1>
@@ -30,13 +30,9 @@ return;
 			carEnter(flr)== (
 				parkingLot.carEnter(flr);
 			);
-		public payTicket:()==>Ticket`PaidTicketList
-		       payTicket()==
-			(
-			tickets.payTicket(tickets.newTicket);
-			);
+		
 
-	--lastly, car exit yeah
+	--lastly, car exit 
 		public carExit: ParkingLot`Floor ==> ParkingLot`floorToLotCount
 			carExit(flr)== (
 				parkingLot.carExit(flr);

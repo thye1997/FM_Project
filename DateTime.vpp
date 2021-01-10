@@ -10,9 +10,10 @@ class DateTime
 		public date: Date:= new Date();
 		
 	operations
-		public DateTime: () ==> DateTime
-			DateTime () == (
+		public createDateTime: () ==> DateTime
+			createDateTime () == (
 				dateTime := mk_DateTime(date.createDate(), time.createTime());
+				return dateTime;
 			);
 
 		public paidDateTime: bool ==> DateTime
