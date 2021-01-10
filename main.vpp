@@ -1,42 +1,36 @@
 --entry point of the system
-
-
 class Main
 
-instance variables
-public tickets: Ticket:=new Ticket();
-public parkingLot: ParkingLot:= new ParkingLot();
-public sensor: Sensor:= new Sensor();
+	instance variables
+		public tickets : Ticket := new Ticket();
+		public parkingLot : ParkingLot:= new ParkingLot();
+		public sensor : Sensor:= new Sensor();
+		public dispenser : Dispenser := new Dispenser();
 
-operations
+	operations
 
---firstly, create slots first
-public initSlot:()==>seq of char
-initSlot()==
-(
- parkingLot.createSlot();
-);-- (optional) can run parkingLot.showSlot() if want to view slot amount
+	--firstly, create slots first
+		public initSlot:()==>seq of char
+			initSlot()== (
+				parkingLot.createSlot();
+			);-- (optional) can run parkingLot.showSlot() if want to view slot amount
 
---secondly, run Sensor carDistance(distance) eg. nat = 10 is 10cm, 8 is 8cm, (car must be 10cm or closer to dispenser)
-public carAtDispense: nat ==>Ticket`Ticket
-carAtDispense(dist)==
-( 
- tickets.newTicket:= sensor.carAtDispense(dist);
-return tickets.newTicket;
-);
+	--secondly, run Sensor carDistance(distance) eg. nat = 10 is 10cm, 8 is 8cm, (car must be 10cm or closer to dispenser)
+		public carAtDispense: nat ==>Ticket`Ticket
+			carAtDispense(dist)== (
+				return dispenser.onButtonPressed(dist);
+			);
 
---thirdly, run parkinglot carEnter(floor) eg. <Floor1>
-public carEnter: ParkingLot`Floor ==> ParkingLot`floorToLotCount
-carEnter(flr)==
-(
- parkingLot.carEnter(flr);
-);
+	--thirdly, run parkinglot carEnter(floor) eg. <Floor1>
+		public carEnter: ParkingLot`Floor ==> ParkingLot`floorToLotCount
+			carEnter(flr)== (
+				parkingLot.carEnter(flr);
+			);
 
---lastly, car exit yeah
-public carExit: ParkingLot`Floor ==> ParkingLot`floorToLotCount
-carExit(flr)==
-(
- parkingLot.carExit(flr,tickets);
-);
+	--lastly, car exit yeah
+		public carExit: ParkingLot`Floor ==> ParkingLot`floorToLotCount
+			carExit(flr)== (
+				parkingLot.carExit(flr);
+			);
 
 end Main

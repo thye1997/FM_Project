@@ -1,82 +1,64 @@
 class Sensor
 
-types
-public LotSensor = map nat1 to seq of char;
+	types
+		
+		public Status = <Vacant> | <Occupied>;
+		public distance = real;
+		public Floor = <Floor1> | <Floor2> | <Floor3>;
+		public sensorType = <Parking> | <Dispenser>;
+		public sensorDist = map sensorType to distance;
+		public Sensor:: sensorName: sensorType
+						sensorDistance: distance;
+		
+		public LotSensor = map nat1 to Status;
+		public sensorList = map nat to seq of seq of char;
+		public sensorDistList = map nat1 to nat1;
 
-public sensorType = map seq of char to seq of char;
-public sensorDist = map seq of char to nat;
-public Sensor::
-	sensorName: seq of char
-	sensorDistance: seq of char;
+	instance variables
+		private lotSensor : LotSensor := { 1 |-> <Vacant> };
 
-public sensorList = map nat to seq of seq of char;
-public sensorDistList = map nat1 to nat1;		
-
-instance variables
-private lotSensor : LotSensor := { 1 |-> "vacant" };
-
-private sensorTypes: sensorType :={"Dispenser" |-> "Dispense Sensor", "Lot"|->"Lot Sensor"};
-private sensorDistance: sensorDist:= {"Dispenser" |-> 10, "Lot"|-> 2};
-public isCarpark: bool:= false;
-private dispenser: Dispenser:= new Dispenser();
-
-private sensor: Sensor;	
-operations
-public getLotSensor : nat1 ==> seq of char
-getLotSensor (lot) == (
-return sensorTypes(lot);
-);
-
-
-public carDistance: nat * seq of char ==> seq of char
-carDistance(dist,type)==
-( 
-
--- for dispense sensor is in "cm", lot sensor is in "meter"
-if sensor.sensorName = sensorTypes(type)
-  then
- (if dist <= sensor.sensorDistance and sensor.sensorName = sensorTypes("Dispenser")
-	then 
-	(dispenser.dispenseTicket(true);)--if car near dispenser
-        else if dist<= sensor.sensorDistance and sensor.sensorName = sensorTypes("Lot")
-	then (return ;)--if car near parking lot
-	else (return ;)
- )--end of 1st if
-);
-
-public carAtDispense: nat ==> Ticket`Ticket
-carAtDispense(dist)==
-(
-sensor:=mk_Sensor(sensorTypes("Dispenser"), sensorDistance("Dispenser"));
-if dist <= sensor.sensorDistance
-	then 
-	(dispenser.dispenseTicket(true);)--if car near dispenser
-	else
-	(dispenser.dispenseTicket(false);)
-);
-
-public carAtParking: nat ==> bool
-carAtParking(dist)==
-(
-sensor:=mk_Sensor(sensorTypes("Lot"), sensorDistance("Lot"));
-if dist <= sensor.sensorDistance
-	then 
-	(isCarPark(true);)--if car near lot
-	else
-	(isCarPark(false);)
-);
-
-public isCarExist : ()==> bool
-isCarExist()==
-(
- return true;
-);
-public isCarPark : bool ==>bool
-isCarPark(val)==
-(
-isCarpark:= val;
-return val;
-);		
--- public detectLot
+		private sensorTypes: map sensorType to seq of char := {<Parking> |-> "Parking Lot Sensor", <Dispenser> |-> "Dispenser Sensor"};
+		public sensorDistance: sensorDist:= {<Dispenser> |-> 100, <Parking> |-> 50}; --unit in cm
+		
+		private dispenser: Dispenser:= new Dispenser();
 	
+		private sensor: Sensor;	
+		public objDist : distance;
+		public carAtDispenser : bool;
+		public carAtParking : bool;
+		public occupied: bool:= false;
+		
+	values
+		public scannedDist : distance = 100;
+		
+	operations
+		public isCarExist : ()==> bool
+			isCarExist()== (
+				return true;
+			);	
+	
+		public getScannedObjDist : () ==> real
+			getScannedObjDist () == (
+				return objDist;
+			);
+			
+		public setScannedObjDist : real ==> ()
+			setScannedObjDist (input) == (
+				objDist := input;
+			);
+			
+		public scanForObject : sensorType ==> ()
+			scanForObject (sType) == (
+				cases sType:
+					<Dispenser> -> (
+							if objDist <= sensorDistance(sType)
+								then carAtDispenser := true;
+							),
+					<Parking> -> (
+							if objDist <= sensorDistance(sType)
+								then carAtParking := true;
+							)
+
+					end;
+			);
 end Sensor

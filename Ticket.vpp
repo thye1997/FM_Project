@@ -1,50 +1,62 @@
 class Ticket
 
-types
+	types
+		public Ticket :: ticketId: seq of char
+						 issueDateTime : DateTime
+						 paidDateTime : DateTime
+						 isPaid: bool;
 
-public Ticket :: 
-ticketId: seq of char
-day: nat1
-month: seq of char
-year: nat1
-isPaid: bool;
-
-public paidticket::
-ticketId: seq of char
-price: real
-isPaid: bool;
-
-
-instance variables
-public newTicket: Ticket;
-public paidTicket: paidticket;
+		public paidticket::
+			ticketId: seq of char
+			price: real
+			isPaid: bool;
+			
+		public TicketList = map seq of char to Ticket;
+		public PaidTicketList = map seq of char to Ticket;
 
 
-operations
-public generateTicket: ()==> Ticket
-generateTicket()==
-(
+	instance variables
+		public newTicket: Ticket;
+		public paidTicket: paidticket;
+		public ticketList : TicketList := { |-> };
+		public paidTicketList : PaidTicketList := { |-> };
 
-newTicket:= mk_Ticket("ID-1234", 21, "September", 2020, false);
-return newTicket;
+	operations
+		public generateTicket: ()==> Ticket
+			generateTicket()==(
+			
+				newTicket:= mk_Ticket("ID-1234", new DateTime(), new DateTime(), false);
+				ticketList := ticketList munion {newTicket.ticketId |-> newTicket };
+				return newTicket;
+			);
+			
+	public payTicket:Ticket==> Ticket
+		payTicket(tix)==
+		(
+			dcl ticket :Ticket := tix;
+			if ticket.ticketId in set dom ticketList
+				then (
+					ticket.paidDateTime := new DateTime();
+					ticket.isPaid := true;
+					paidTicketList := paidTicketList munion {ticket.ticketId |-> ticket };
+					return ticket;
+				)
+			
+			else (
+				return tix;
+			);
+		);
+	
+	public showNewTicket:()==> Ticket
+		showNewTicket()==
+			(
+				return newTicket;
+			);
 
-);
-public payTicket:Ticket==>paidticket
-payTicket(tix)==
-(
-paidTicket:=mk_paidticket(tix.newTicket.ticketId, 8.88, true);
-return showPaidTicket();
-);
-public showNewTicket:()==> Ticket
-showNewTicket()==
-(
-return newTicket;
-);
-
-public showPaidTicket:()==> paidticket
-showPaidTicket()==
-(
-return paidTicket;
-);
+	public showPaidTicket:()==> PaidTicketList
+		showPaidTicket()==
+			(
+				return paidTicketList;
+			);
 
 end Ticket

@@ -1,0 +1,17 @@
+class Time
+
+	types
+		public Hour = nat1;
+		public Minute = nat1;
+		public Second = nat1;
+		
+	instance variables
+		hour : Hour;
+		minute : Minute;
+		second : Second;
+
+		inv hour >= 0 and hour <= 23;
+		inv minute >= 0 and minute <= 59;
+		inv second >= 0 and second <= 59;
+
+end Time

@@ -1,0 +1,15 @@
+class PaymentMachine
+
+	types
+
+	instance variables
+		private ticket: Ticket:= new Ticket();
+
+	operations
+		public payTicket: Ticket`Ticket==>Ticket`Ticket
+			payTicket(tix)==
+			(
+				ticket.payTicket(tix);
+			);
+
+end PaymentMachine
