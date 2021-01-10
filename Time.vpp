@@ -1,0 +1,26 @@
+class Time
+
+	types
+          
+		public Hour = nat1;
+		public Minute = nat1;
+		public Second = nat1;
+		
+	instance variables
+		hour : Hour;
+		minute : Minute;
+		second : Second;
+                public time: Hour* Minute * Second;
+		inv hour >= 0 and hour <= 23;
+		inv minute >= 0 and minute <= 59;
+		inv second >= 0 and second <= 59;
+
+	
+       operations
+       public createTime:()==>Hour* Minute* Second
+              createTime()==(
+		--time:= mk_(13,50,50);
+                return mk_(13,50,50);
+	      );
+
+end Time

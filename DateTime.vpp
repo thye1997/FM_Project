@@ -1,0 +1,23 @@
+class DateTime
+
+	types
+		public DateTime :: date: Date
+		                   time: Time;
+
+	instance variables
+		public dateTime: DateTime;
+		public time:Time:= new Time();
+		public date: Date:= new Date();
+		
+	operations
+		public DateTime: () ==> DateTime
+			DateTime () == (
+				dateTime := mk_DateTime(date.createDate(), time.createTime());
+			);
+
+		public paidDateTime: bool ==> DateTime
+			paidDateTime (init) == (
+				dateTime := mk_DateTime(new Date(), new Time());
+			);
+			
+end DateTime
