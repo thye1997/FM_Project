@@ -19,9 +19,6 @@ class Sensor
 
 		private sensorTypes: map sensorType to seq of char := {<Parking> |-> "Parking Lot Sensor", <Dispenser> |-> "Dispenser Sensor"};
 		public sensorDistance: sensorDist:= {<Dispenser> |-> 100, <Parking> |-> 50}; --unit in cm
-		
-		private dispenser: Dispenser:= new Dispenser();
-	
 		private sensor: Sensor;	
 		public objDist : distance;
 		public carAtDispenser : bool;
