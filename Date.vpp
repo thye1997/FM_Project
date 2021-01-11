@@ -1,18 +1,18 @@
 class Date
 
-	types
-		public Day = nat1;
-		public Month = nat1;
-		public Year = nat1;
-		
-	instance variables
-		public date : Day*Month*Year;
-		day : Day;
-		month : Month;
-		year : Year;
-		
-		inv if month in set {4,6,9,11}
-			then day <= 30
-		else (month = 2) => (day <= 29)
+    types
+        public Day = nat1;
+        public Month = nat1;
+        public Year = nat1;
+
+    instance variables
+        public date : Day*Month*Year;
+        day : Day;
+        month : Month;
+        year : Year;
+
+        inv if month in set {4,6,9,11}
+            then day <= 30
+        else (month = 2) => (day <= 29)
 
 end Date

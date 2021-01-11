@@ -1,43 +1,39 @@
 class Dispenser
 
+    instance variables
+        public isDispense: bool:= false;
+        public ticket: Ticket:= new Ticket();
+        public sensor : Sensor := new Sensor();
 
-	types
+    operations
+        public dispenseTicket: bool==>Ticket`Ticket
+            dispenseTicket(boolVal)== (
+                 isDispense:= boolVal;
+                 if isDispense = true
+                   then (ticket.generateTicket();
+                    )
+                   else (ticket.showNewTicket();)
+            );
 
+        public onAutoDispense : real ==>Ticket`Ticket
+            onAutoDispense (dist) == (
+                sensor.setScannedObjDist(dist);
+                if carAtDispenser(sensor.getScannedObjDist())
+                    then dispenseTicket(true)
+                    
+                else
+                    dispenseTicket(false);
+            );
 
-	instance variables
-		public isDispense: bool:= false;
-		public ticket: Ticket:= new Ticket();
-		public sensor : Sensor := new Sensor();
-
-	operations
-		public dispenseTicket: bool==>Ticket`Ticket
-			dispenseTicket(boolVal)== (
-				 isDispense:= boolVal;
-				 if isDispense = true
-				   then (ticket.generateTicket();
-					)
-				   else (ticket.showNewTicket();)
-			);
-			
-		public onAutoDispense : real ==>Ticket`Ticket
-			onAutoDispense (dist) == (
-				sensor.setScannedObjDist(dist);
-				if carAtDispenser(sensor.getScannedObjDist())
-					then dispenseTicket(true)
-					
-				else
-					dispenseTicket(false);
-			);
-			
-		public carAtDispenser: nat ==> bool
-			carAtDispenser(dist)== (
-				if dist <= sensor.sensorDistance(<Dispenser>)
-					then
-						return true
-				-- (dispenser.dispenseTicket(true);)--if car near dispenser
-				else
-					return false;
-				-- (dispenser.dispenseTicket(false);)
-			);	
+        public carAtDispenser: nat ==> bool
+            carAtDispenser(dist)== (
+                if dist <= sensor.sensorDistance(<Dispenser>)
+                    then
+                        return true
+                -- (dispenser.dispenseTicket(true);)--if car near dispenser
+                else
+                    return false;
+                -- (dispenser.dispenseTicket(false);)
+            );  
 
 end Dispenser

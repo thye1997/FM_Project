@@ -1,118 +1,103 @@
 class ParkingLot
 
-	types
-		public Lot = nat1;
-		public LotToVacancy = map Lot to bool;
-		public LotCount = nat;
-		public Floor = <Floor1> | <Floor2> | <Floor3>;
+    types
+        public Lot = nat1;
+        public LotToVacancy = map Lot to bool;
+        public LotCount = nat;
+        public Floor = <Floor1> | <Floor2> | <Floor3>;
         public floorToLotCount = map Floor to LotCount;
-		public FloorLot = map Floor to LotToVacancy;
-		public slots = nat;
-		
-	instance variables
-		private lotCount : nat := 0;
-		private LotList : LotToVacancy := { 1 |-> true, 2 |-> false, 3 |-> true};
-		public floorLotList : FloorLot := { <Floor1> |-> LotList, <Floor2> |-> LotList };
-               
-                --obj instance 
-		public lotSensor : Sensor := new Sensor();
-		
-		public lotVacant : bool;
-		private floors : floorToLotCount:= {|->};
-		private setOfFloor: set of Floor:={};
-		
-	
-	operations
-	
-	
-		public isLotVacant: Floor*Lot*nat ==> bool
-			isLotVacant(flr, lot, dist)== (
-				dcl temp : LotToVacancy := floorLotList(flr);
-				if dist <= lotSensor.sensorDistance(<Parking>) --if car near lot
-					then (
-						lotSensor.occupied := true;
-						lotVacant := false;
-						LotList(lot) := lotVacant;
-						temp(lot) := lotVacant;
-						floorLotList(flr) := temp; 
-					)
-				else(
-					lotSensor.occupied := false;
-					lotVacant := true;
-					LotList(lot) := lotVacant;
-				);
-				
-				return lotVacant;
-				);
-				
-		public getAvailableLotCount : LotToVacancy ==> nat
-			getAvailableLotCount (lotList) == (
+        public FloorLot = map Floor to LotToVacancy;
+        public slots = nat;
 
-				for all x in set dom lotList do
-				 (if lotList(x) = true
-					then lotCount := lotCount + 1);
-					
-				return lotCount;
-			);
-			
+    instance variables
+        private lotCount : nat := 0;
+        private LotList : LotToVacancy := { 1 |-> true, 2 |-> false, 3 |-> true};
+        public floorLotList : FloorLot := { <Floor1> |-> LotList, <Floor2> |-> LotList };
+        public lotSensor : Sensor := new Sensor();
+        public lotVacant : bool;
+        private floors : floorToLotCount:= {|->};
+        private setOfFloor: set of Floor:={};
 
-			
-	
+    operations
+        public isLotVacant: Floor*Lot*nat ==> bool
+            isLotVacant(flr, lot, dist)== (
+                dcl temp : LotToVacancy := floorLotList(flr);
+                if dist <= lotSensor.sensorDistance(<Parking>) --if car near lot
+                    then (
+                        lotSensor.occupied := true;
+                        lotVacant := false;
+                        LotList(lot) := lotVacant;
+                        temp(lot) := lotVacant;
+                        floorLotList(flr) := temp; 
+                    )
+                else(
+                    lotSensor.occupied := false;
+                    lotVacant := true;
+                    LotList(lot) := lotVacant;
+                );
+                
+                return lotVacant;
+            );
 
-----------------------------------------------------------------------------------
-	   public createInitialLotList:()==> floorToLotCount
-		        createInitialLotList()==(
-		
-			floors:= floors munion { <Floor1> |-> 5};
-			floors:= floors munion { <Floor2> |-> 5};
-				return floors;
-			);
+        public getAvailableLotCount : LotToVacancy ==> nat
+            getAvailableLotCount (lotList) == (
 
-	   public showFloorEmptyLot:()==>floorToLotCount
-		  showFloorEmptyLot()==
-			(
-				return floors;
-			);
-	   
+                for all x in set dom lotList do
+                 (if lotList(x) = true
+                    then lotCount := lotCount + 1);
+                    
+                return lotCount;
+            );
+
+       public createInitialLotList:()==> floorToLotCount
+                createInitialLotList()==(
+        
+            floors:= floors munion { <Floor1> |-> 5};
+            floors:= floors munion { <Floor2> |-> 5};
+                return floors;
+            );
+
+       public showFloorEmptyLot:()==>floorToLotCount
+          showFloorEmptyLot()==
+            (
+                return floors;
+            );
+
         public enterLotByFloor: Floor ==> floorToLotCount
-			enterLotByFloor(f)==(
-				setOfFloor := dom floors;
-				if exists x in set setOfFloor & f = x
-					then (
-						lotSensor.occupied := true;
-						floors:= floors ++ {f |-> floors(f)-1 };
-						return floors;
-					)
+            enterLotByFloor(f)==(
+                setOfFloor := dom floors;
+                if exists x in set setOfFloor & f = x
+                    then (
+                        lotSensor.occupied := true;
+                        floors:= floors ++ {f |-> floors(f)-1 };
+                        return floors;
+                    )
 
-				else (
-					return floors
-					);
-			);
-	   
-	   public exitLotByFloor: Floor ==> floorToLotCount
-		  exitLotByFloor(f)== (
+                else (
+                    return floors
+                    );
+            );
+
+       public exitLotByFloor: Floor ==> floorToLotCount
+          exitLotByFloor(f)== (
              setOfFloor := dom floors; -- get list of slot for validate input f is valid
-			
-			if exists x in set setOfFloor & f = x  
-				then (
-					lotSensor.occupied:= false;
-					
-					if lotSensor.occupied = false
-						then ( 
-							floors:= floors ++ {f |-> floors(f)+1};
-							return floors;
-						)
-					else (
-						return floors;
-					)
-				)
-			else (
-				return floors;
-			);
-		);
-	   
-           
-	functions
-		
-	
+            
+            if exists x in set setOfFloor & f = x  
+                then (
+                    lotSensor.occupied:= false;
+                    
+                    if lotSensor.occupied = false
+                        then ( 
+                            floors:= floors ++ {f |-> floors(f)+1};
+                            return floors;
+                        )
+                    else (
+                        return floors;
+                    )
+                )
+            else (
+                return floors;
+            );
+        );
+
 end ParkingLot

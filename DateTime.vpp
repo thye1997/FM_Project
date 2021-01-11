@@ -1,18 +1,17 @@
 class DateTime
 
-	types
-		public DateTime :: date: Date
-				   time: Time;
+    types
+        public DateTime :: date: Date
+                   time: Time;
 
-	instance variables
-		public dateTime: DateTime;
-		
-	operations
-		public getDateTime: () ==> DateTime
-			getDateTime () == (
-				dateTime := mk_DateTime(new Date(), new Time());
-				return dateTime;
-			);
+    instance variables
+        public dateTime: DateTime;
 
-			
+    operations
+        public getDateTime: () ==> DateTime
+            getDateTime () == (
+                dateTime := mk_DateTime(new Date(), new Time());
+                return dateTime;
+            );
+
 end DateTime

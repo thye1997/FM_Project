@@ -1,55 +1,51 @@
 class Sensor
 
-	types
-		
-		public Status = <Vacant> | <Occupied>;
-		public distance = real;
-		public sensorType = <Parking> | <Dispenser>;
-		public sensorDist = map sensorType to distance;
-		public Sensor:: sensorName: sensorType
-				ensorDistance: distance;
-		
-		public LotSensor = map nat1 to Status;
-		public sensorList = map nat to seq of seq of char;
-		public sensorDistList = map nat1 to nat1;
+    types
+        public Status = <Vacant> | <Occupied>;
+        public distance = real;
+        public sensorType = <Parking> | <Dispenser>;
+        public sensorDist = map sensorType to distance;
+        public Sensor:: sensorName: sensorType
+                        sensorDistance: distance;
 
-	instance variables
-		private lotSensor : LotSensor := { 1 |-> <Vacant> };
+        public LotSensor = map nat1 to Status;
+        public sensorList = map nat to seq of seq of char;
+        public sensorDistList = map nat1 to nat1;
 
-		private sensorTypes: map sensorType to seq of char := {<Parking> |-> "Parking Lot Sensor", <Dispenser> |-> "Dispenser Sensor"};
-		public sensorDistance: sensorDist:= {<Dispenser> |-> 100, <Parking> |-> 50}; --unit in cm
-		private sensor: Sensor;	
-		public objDist : distance;
-		public carAtDispenser : bool;
-		public carAtParking : bool;
-		public occupied: bool:= false;
-		
-	values
-		
-	operations	
-	
-		public getScannedObjDist : () ==> real
-			getScannedObjDist () == (
-				return objDist;
-			);
-			
-		public setScannedObjDist : real ==> ()
-			setScannedObjDist (input) == (
-				objDist := input;
-			);
-			
-		public scanForObject : sensorType ==> ()
-			scanForObject (sType) == (
-				cases sType:
-					<Dispenser> -> (
-							if objDist <= sensorDistance(sType)
-								then carAtDispenser := true;
-							),
-					<Parking> -> (
-							if objDist <= sensorDistance(sType)
-								then carAtParking := true;
-							)
+    instance variables
+        private lotSensor : LotSensor := { 1 |-> <Vacant> };
 
-					end;
-			);
+        private sensorTypes: map sensorType to seq of char := {<Parking> |-> "Parking Lot Sensor", <Dispenser> |-> "Dispenser Sensor"};
+        public sensorDistance: sensorDist:= {<Dispenser> |-> 100, <Parking> |-> 50}; --unit in cm
+        private sensor: Sensor; 
+        public objDist : distance;
+        public carAtDispenser : bool;
+        public carAtParking : bool;
+        public occupied: bool:= false;
+
+    operations
+        public getScannedObjDist : () ==> real
+            getScannedObjDist () == (
+                return objDist;
+            );
+            
+        public setScannedObjDist : real ==> ()
+            setScannedObjDist (input) == (
+                objDist := input;
+            );
+            
+        public scanForObject : sensorType ==> ()
+            scanForObject (sType) == (
+                cases sType:
+                    <Dispenser> -> (
+                            if objDist <= sensorDistance(sType)
+                                then carAtDispenser := true;
+                            ),
+                    <Parking> -> (
+                            if objDist <= sensorDistance(sType)
+                                then carAtParking := true;
+                            )
+
+                    end;
+            );
 end Sensor
