@@ -19,8 +19,8 @@ class Dispenser
 				   else (ticket.showNewTicket();)
 			);
 			
-		public onButtonPressed : real ==>Ticket`Ticket
-			onButtonPressed (dist) == (
+		public onAutoDispense : real ==>Ticket`Ticket
+			onAutoDispense (dist) == (
 				sensor.setScannedObjDist(dist);
 				if carAtDispenser(sensor.getScannedObjDist())
 					then dispenseTicket(true)

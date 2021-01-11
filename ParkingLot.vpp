@@ -15,7 +15,6 @@ class ParkingLot
 		public floorLotList : FloorLot := { <Floor1> |-> LotList, <Floor2> |-> LotList };
                
                 --obj instance 
-		public io : IO := new IO();
 		public lotSensor : Sensor := new Sensor();
 		
 		public lotVacant : bool;
@@ -24,6 +23,7 @@ class ParkingLot
 		
 	
 	operations
+	
 	
 		public isLotVacant: Floor*Lot*nat ==> bool
 			isLotVacant(flr, lot, dist)== (
@@ -55,33 +55,27 @@ class ParkingLot
 				return lotCount;
 			);
 			
-		public getList : () ==> LotToVacancy
-			getList () == (
-				return LotList;
-			);
+
 			
-	    public print : seq of char ==> bool
-			print(msg) == (
-				io.echo(msg);
-			);
+	
 
 ----------------------------------------------------------------------------------
-	   public createSlot:()==> seq of char
-		        createSlot()==(
+	   public createInitialLotList:()==> floorToLotCount
+		        createInitialLotList()==(
 		
 			floors:= floors munion { <Floor1> |-> 5};
 			floors:= floors munion { <Floor2> |-> 5};
-				return "slot generated";
+				return floors;
 			);
 
-	   public showSlot:()==>floorToLotCount
-		  showSlot()==
+	   public showFloorEmptyLot:()==>floorToLotCount
+		  showFloorEmptyLot()==
 			(
 				return floors;
 			);
 	   
-        public carEnter: Floor ==> floorToLotCount
-			carEnter(f)==(
+        public enterLotByFloor: Floor ==> floorToLotCount
+			enterLotByFloor(f)==(
 				setOfFloor := dom floors;
 				if exists x in set setOfFloor & f = x
 					then (
@@ -95,8 +89,8 @@ class ParkingLot
 					);
 			);
 	   
-	   public carExit: Floor ==> floorToLotCount
-		  carExit(f)== (
+	   public exitLotByFloor: Floor ==> floorToLotCount
+		  exitLotByFloor(f)== (
              setOfFloor := dom floors; -- get list of slot for validate input f is valid
 			
 			if exists x in set setOfFloor & f = x  

@@ -2,14 +2,11 @@ class Ticket
 
 	types
 		public Ticket :: ticketId: seq of char
-						 issueDateTime : DateTime
-						 paidDateTime : DateTime
-						 isPaid: bool;
+				 issueDateTime : DateTime`DateTime
+				 paidDateTime : DateTime`DateTime
+				 isPaid: bool;
 
-		public paidticket::
-			ticketId: seq of char
-			price: real
-			isPaid: bool;
+		
 			
 		public TicketList = map seq of char to Ticket;
 		public PaidTicketList = map seq of char to Ticket;
@@ -17,15 +14,17 @@ class Ticket
 
 	instance variables
 		public newTicket: Ticket;
-		public paidTicket: paidticket;
 		public ticketList : TicketList := { |-> };
 		public paidTicketList : PaidTicketList := { |-> };
+
+		--create datime object
+		public dateTime: DateTime:= new DateTime();
 
 	operations
 		public generateTicket: ()==> Ticket
 			generateTicket()==(
 			
-				newTicket:= mk_Ticket("ID-1234", new DateTime(), new DateTime(), false);
+				newTicket:= mk_Ticket("ID-1234", dateTime.getDateTime(), dateTime.getDateTime(), false);
 				ticketList := ticketList munion {newTicket.ticketId |-> newTicket };
 				return newTicket;
 			);
@@ -36,14 +35,14 @@ class Ticket
 			dcl ticket :Ticket := tix;
 			if ticket.ticketId in set dom ticketList
 				then (
-					ticket.paidDateTime := new DateTime();
+					ticket.paidDateTime := dateTime.getDateTime();
 					ticket.isPaid := true;
 					paidTicketList := paidTicketList munion {ticket.ticketId |-> ticket };
-					return ticket;
+					return ticket; --return paid ticket to user
 				)
 			
 			else (
-				return tix;
+				return tix; --return ticket back to user
 			);
 		);
 	

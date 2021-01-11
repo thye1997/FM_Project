@@ -4,11 +4,10 @@ class Sensor
 		
 		public Status = <Vacant> | <Occupied>;
 		public distance = real;
-		public Floor = <Floor1> | <Floor2> | <Floor3>;
 		public sensorType = <Parking> | <Dispenser>;
 		public sensorDist = map sensorType to distance;
 		public Sensor:: sensorName: sensorType
-						sensorDistance: distance;
+				ensorDistance: distance;
 		
 		public LotSensor = map nat1 to Status;
 		public sensorList = map nat to seq of seq of char;
@@ -26,13 +25,8 @@ class Sensor
 		public occupied: bool:= false;
 		
 	values
-		public scannedDist : distance = 100;
 		
-	operations
-		public isCarExist : ()==> bool
-			isCarExist()== (
-				return true;
-			);	
+	operations	
 	
 		public getScannedObjDist : () ==> real
 			getScannedObjDist () == (

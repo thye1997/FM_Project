@@ -2,20 +2,17 @@ class DateTime
 
 	types
 		public DateTime :: date: Date
-						   time: Time;
+				   time: Time;
 
 	instance variables
 		public dateTime: DateTime;
 		
 	operations
-		public DateTime: () ==> DateTime
-			DateTime () == (
+		public getDateTime: () ==> DateTime
+			getDateTime () == (
 				dateTime := mk_DateTime(new Date(), new Time());
+				return dateTime;
 			);
 
-		public DateTime: bool ==> DateTime
-			DateTime (init) == (
-				dateTime := mk_DateTime(new Date(), new Time());
-			);
 			
 end DateTime
